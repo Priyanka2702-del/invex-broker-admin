@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import Sidebar from "@/components/Sidebar";
-import Topbar from "@/components/Topbar";
+import AdminSidebar from "@/components/admin/AdminSidebar";
+import AdminNavbar from "@/components/admin/AdminNavbar";
 import { useAdminAuth } from "@/context/AdminAuthContext";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
   const { admin, loading } = useAdminAuth();
   const router = useRouter();
   const pathname = usePathname();
@@ -38,7 +39,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           width: 36,
           height: 36,
           border: "3px solid #e2e8f0",
-          borderTopColor: "#00A63E",
+          borderTopColor: "#2456e6",
           borderRadius: "50%",
           animation: "spin 0.7s linear infinite",
         }} />
@@ -53,26 +54,18 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div id="app" className="min-h-screen bg-[var(--bg0)]">
-      <Topbar
-        isSidebarOpen={sidebarOpen}
-        onMenuClick={() => setSidebarOpen((open) => !open)}
+    <div id="app" className={`ix-shell ${collapsed ? "ix-collapsed" : ""}`}>
+      <div className={`ix-scrim ${sidebarOpen ? "open" : ""}`} onClick={() => setSidebarOpen(false)} aria-hidden="true" />
+      <AdminSidebar
+        collapsed={collapsed}
+        mobileOpen={sidebarOpen}
+        onToggleCollapse={() => setCollapsed((c) => !c)}
+        onExpand={() => setCollapsed(false)}
+        onNavigate={() => setSidebarOpen(false)}
       />
-
-      <div className="app-body">
-        <button
-          type="button"
-          aria-label="Close navigation menu"
-          className={[
-            "fixed inset-0 top-14 z-[90] bg-slate-950/30 backdrop-blur-[2px] transition-opacity duration-300 md:hidden",
-            sidebarOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
-          ].join(" ")}
-          onClick={() => setSidebarOpen(false)}
-        />
-
-        <Sidebar isOpen={sidebarOpen} onNavigate={() => setSidebarOpen(false)} />
-
-        <main className="main w-full min-w-0" id="main">
+      <div className="ix-main">
+        <AdminNavbar onMenu={() => setSidebarOpen(true)} />
+        <main className="ix-content" id="main">
           {children}
         </main>
       </div>

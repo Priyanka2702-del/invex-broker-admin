@@ -60,13 +60,13 @@ export default function AdminLoginPage() {
         <div style={{
           position: "absolute", top: "-120px", left: "-120px",
           width: 450, height: 450, borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(0,166,62,0.12) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(36,86,230,0.12) 0%, transparent 70%)",
           animation: "blobFloat 8s ease-in-out infinite",
         }} />
         <div style={{
           position: "absolute", bottom: "-100px", right: "-80px",
           width: 400, height: 400, borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(0,166,62,0.09) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(36,86,230,0.09) 0%, transparent 70%)",
           animation: "blobFloat 10s ease-in-out infinite reverse",
         }} />
         <div style={{
@@ -79,7 +79,7 @@ export default function AdminLoginPage() {
         {/* Grid pattern overlay */}
         <div style={{
           position: "absolute", inset: 0,
-          backgroundImage: "linear-gradient(rgba(0,166,62,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,166,62,0.04) 1px, transparent 1px)",
+          backgroundImage: "linear-gradient(rgba(36,86,230,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(36,86,230,0.04) 1px, transparent 1px)",
           backgroundSize: "40px 40px",
         }} />
       </div>
@@ -89,12 +89,12 @@ export default function AdminLoginPage() {
         position: "absolute", top: 32, left: 32,
         display: "flex", alignItems: "center", gap: 8,
         background: "rgba(255,255,255,0.85)", backdropFilter: "blur(12px)",
-        border: "1px solid rgba(0,166,62,0.15)", borderRadius: 12,
+        border: "1px solid rgba(36,86,230,0.15)", borderRadius: 12,
         padding: "10px 16px",
-        boxShadow: "0 4px 16px rgba(0,166,62,0.08)",
+        boxShadow: "0 4px 16px rgba(36,86,230,0.08)",
         animation: mounted ? "slideInLeft 0.6s cubic-bezier(0.16,1,0.3,1) 0.5s both" : "none",
       }}>
-        <i className="ti ti-shield-check" style={{ fontSize: 18, color: "#00A63E" }} />
+        <i className="ti ti-shield-check" style={{ fontSize: 18, color: "#2456e6" }} />
         <div>
           <div style={{ fontSize: 11, fontWeight: 700, color: "#0f172a", letterSpacing: "0.03em" }}>
             SECURE ACCESS
@@ -108,9 +108,9 @@ export default function AdminLoginPage() {
         position: "absolute", top: 32, right: 32,
         display: "flex", alignItems: "center", gap: 8,
         background: "rgba(255,255,255,0.85)", backdropFilter: "blur(12px)",
-        border: "1px solid rgba(0,166,62,0.15)", borderRadius: 12,
+        border: "1px solid rgba(36,86,230,0.15)", borderRadius: 12,
         padding: "10px 16px",
-        boxShadow: "0 4px 16px rgba(0,166,62,0.08)",
+        boxShadow: "0 4px 16px rgba(36,86,230,0.08)",
         animation: mounted ? "slideInRight 0.6s cubic-bezier(0.16,1,0.3,1) 0.5s both" : "none",
       }}>
         <div style={{
@@ -136,7 +136,7 @@ export default function AdminLoginPage() {
         <div style={{
           position: "absolute", inset: -1,
           borderRadius: 24,
-          background: "linear-gradient(135deg, rgba(0,166,62,0.3), rgba(16,185,129,0.1), rgba(0,166,62,0.2))",
+          background: "linear-gradient(135deg, rgba(36,86,230,0.3), rgba(16,185,129,0.1), rgba(36,86,230,0.2))",
           filter: "blur(1px)",
         }} />
 
@@ -144,7 +144,7 @@ export default function AdminLoginPage() {
           position: "relative",
           background: "rgba(255,255,255,0.95)",
           backdropFilter: "blur(20px)",
-          border: "1px solid rgba(0,166,62,0.12)",
+          border: "1px solid rgba(36,86,230,0.12)",
           borderRadius: 22,
           padding: "44px 40px",
           boxShadow: "0 32px 80px -12px rgba(0,0,0,0.12), 0 0 0 1px rgba(255,255,255,0.8) inset",
@@ -155,9 +155,9 @@ export default function AdminLoginPage() {
             <div style={{ position: "relative" }}>
               <div style={{
                 width: 64, height: 64, borderRadius: 18,
-                background: "linear-gradient(135deg, #00A63E, #059669)",
+                background: "linear-gradient(135deg, #2456e6, #059669)",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                boxShadow: "0 12px 32px -4px rgba(0,166,62,0.4)",
+                boxShadow: "0 12px 32px -4px rgba(36,86,230,0.4)",
               }}>
                 <i className="ti ti-shield-lock" style={{ fontSize: 28, color: "#fff" }} />
               </div>
@@ -213,7 +213,7 @@ export default function AdminLoginPage() {
                   position: "absolute", left: 14, top: "50%",
                   transform: "translateY(-50%)",
                   fontSize: 16,
-                  color: emailFocus ? "#00A63E" : "#94a3b8",
+                  color: emailFocus ? "#2456e6" : "#94a3b8",
                   transition: "color 0.2s",
                   pointerEvents: "none",
                 }} />
@@ -230,7 +230,7 @@ export default function AdminLoginPage() {
                   style={{
                     width: "100%", height: 48,
                     background: emailFocus ? "#f0fdf4" : "#f8fafc",
-                    border: `1.5px solid ${emailFocus ? "#00A63E" : "#e2e8f0"}`,
+                    border: `1.5px solid ${emailFocus ? "#2456e6" : "#e2e8f0"}`,
                     borderRadius: 12,
                     paddingLeft: 44, paddingRight: 14,
                     fontSize: 14, color: "#0f172a",
@@ -238,7 +238,7 @@ export default function AdminLoginPage() {
                     transition: "all 0.2s",
                     boxSizing: "border-box" as const,
                     fontFamily: "inherit",
-                    boxShadow: emailFocus ? "0 0 0 3px rgba(0,166,62,0.1)" : "none",
+                    boxShadow: emailFocus ? "0 0 0 3px rgba(36,86,230,0.1)" : "none",
                   }}
                 />
               </div>
@@ -258,7 +258,7 @@ export default function AdminLoginPage() {
                   position: "absolute", left: 14, top: "50%",
                   transform: "translateY(-50%)",
                   fontSize: 16,
-                  color: passFocus ? "#00A63E" : "#94a3b8",
+                  color: passFocus ? "#2456e6" : "#94a3b8",
                   transition: "color 0.2s",
                   pointerEvents: "none",
                 }} />
@@ -275,7 +275,7 @@ export default function AdminLoginPage() {
                   style={{
                     width: "100%", height: 48,
                     background: passFocus ? "#f0fdf4" : "#f8fafc",
-                    border: `1.5px solid ${passFocus ? "#00A63E" : "#e2e8f0"}`,
+                    border: `1.5px solid ${passFocus ? "#2456e6" : "#e2e8f0"}`,
                     borderRadius: 12,
                     paddingLeft: 44, paddingRight: 48,
                     fontSize: 14, color: "#0f172a",
@@ -283,7 +283,7 @@ export default function AdminLoginPage() {
                     transition: "all 0.2s",
                     boxSizing: "border-box" as const,
                     fontFamily: "inherit",
-                    boxShadow: passFocus ? "0 0 0 3px rgba(0,166,62,0.1)" : "none",
+                    boxShadow: passFocus ? "0 0 0 3px rgba(36,86,230,0.1)" : "none",
                   }}
                 />
                 <button
@@ -326,12 +326,12 @@ export default function AdminLoginPage() {
                 width: "100%", height: 50,
                 background: loading
                   ? "linear-gradient(135deg, #86efac, #6ee7b7)"
-                  : "linear-gradient(135deg, #00A63E, #059669)",
+                  : "linear-gradient(135deg, #2456e6, #059669)",
                 border: "none", borderRadius: 13,
                 color: "#fff", fontSize: 15, fontWeight: 700,
                 cursor: loading ? "not-allowed" : "pointer",
                 display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
-                boxShadow: loading ? "none" : "0 8px 24px -4px rgba(0,166,62,0.4)",
+                boxShadow: loading ? "none" : "0 8px 24px -4px rgba(36,86,230,0.4)",
                 transition: "all 0.2s",
                 letterSpacing: "0.01em",
                 fontFamily: "inherit",
@@ -339,12 +339,12 @@ export default function AdminLoginPage() {
               onMouseEnter={(e) => {
                 if (!loading) {
                   e.currentTarget.style.transform = "translateY(-1px)";
-                  e.currentTarget.style.boxShadow = "0 12px 28px -4px rgba(0,166,62,0.5)";
+                  e.currentTarget.style.boxShadow = "0 12px 28px -4px rgba(36,86,230,0.5)";
                 }
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "0 8px 24px -4px rgba(0,166,62,0.4)";
+                e.currentTarget.style.boxShadow = "0 8px 24px -4px rgba(36,86,230,0.4)";
               }}
             >
               {loading ? (
@@ -371,12 +371,12 @@ export default function AdminLoginPage() {
           <div style={{
             marginTop: 28,
             padding: "14px 16px",
-            background: "linear-gradient(135deg, rgba(0,166,62,0.04), rgba(16,185,129,0.03))",
-            border: "1px solid rgba(0,166,62,0.1)",
+            background: "linear-gradient(135deg, rgba(36,86,230,0.04), rgba(16,185,129,0.03))",
+            border: "1px solid rgba(36,86,230,0.1)",
             borderRadius: 12,
             display: "flex", alignItems: "flex-start", gap: 10,
           }}>
-            <i className="ti ti-info-circle" style={{ fontSize: 15, color: "#00A63E", flexShrink: 0, marginTop: 1 }} />
+            <i className="ti ti-info-circle" style={{ fontSize: 15, color: "#2456e6", flexShrink: 0, marginTop: 1 }} />
             <p style={{ fontSize: 12, color: "#64748b", margin: 0, lineHeight: 1.6 }}>
               This portal is restricted to authorized administrators only.
               All access attempts are logged and monitored.
@@ -403,7 +403,7 @@ export default function AdminLoginPage() {
             color: "#64748b",
             textTransform: "uppercase" as const, letterSpacing: "0.06em",
           }}>
-            <i className={`ti ${icon}`} style={{ fontSize: 13, color: "#00A63E" }} />
+            <i className={`ti ${icon}`} style={{ fontSize: 13, color: "#2456e6" }} />
             {label}
           </div>
         ))}

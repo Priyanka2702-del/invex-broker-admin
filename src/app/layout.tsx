@@ -1,11 +1,14 @@
 import "./globals.css";
 import "./amg-components.css";
+import "./invex-admin.css";
 import type { Metadata } from "next";
 import AppShell from "@/components/AppShell";
 import { AdminAuthProvider } from "@/context/AdminAuthContext";
+import { AdminDataProvider } from "@/context/AdminDataContext";
+import { AdminExtrasProvider } from "@/context/AdminExtrasContext";
 
 export const metadata: Metadata = {
-  title: "Admin Portal - AMG ",
+  title: "INVEX Trade — Broker Admin",
   description: "Administrative control panel",
 };
 
@@ -23,7 +26,11 @@ export default function RootLayout({
       </head>
       <body>
         <AdminAuthProvider>
-          <AppShell>{children}</AppShell>
+          <AdminDataProvider>
+            <AdminExtrasProvider>
+              <AppShell>{children}</AppShell>
+            </AdminExtrasProvider>
+          </AdminDataProvider>
         </AdminAuthProvider>
       </body>
     </html>

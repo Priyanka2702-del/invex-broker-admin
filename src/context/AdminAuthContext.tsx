@@ -28,6 +28,9 @@ export const AdminAuthProvider = ({ children }: { children: React.ReactNode }) =
       const stored = localStorage.getItem("amg_admin");
       if (token && stored) {
         setAdmin(JSON.parse(stored));
+      } else if (process.env.NEXT_PUBLIC_ADMIN_DEMO === "true") {
+        // Optional local preview without the backend: set NEXT_PUBLIC_ADMIN_DEMO=true in .env.local
+        setAdmin({ email: "admin@invextrade.com", name: "Super Admin", role: "superadmin", isSuperAdmin: true });
       }
     } catch {
       // ignore parse errors
