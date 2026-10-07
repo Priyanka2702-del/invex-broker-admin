@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ConfirmationModal, { Modal } from "./ConfirmationModal";
+import SearchSelect from "./SearchSelect";
 import StatusBadge from "./StatusBadge";
 import { Card, IdLink, InfoGrid } from "./ui";
 import { useAdminData } from "@/context/AdminDataContext";
@@ -127,7 +128,8 @@ function UplineModal({ user, onClose }: { user: User; onClose: () => void }) {
   return (
     <Modal title="Change upline" onClose={onClose} footer={<><button className="ix-btn ix-btn-outline" onClick={onClose}>Cancel</button><button className="ix-btn ix-btn-primary" onClick={() => { d.changeUpline(user.id, v || undefined); onClose(); }}>Save</button></>}>
       Users already in this client&apos;s downline are excluded to avoid loops.
-      <div className="ix-field"><label>New upline</label><select className="ix-select" value={v} onChange={(e) => setV(e.target.value)}><option value="">No upline</option>{opts.map((u) => <option key={u.id} value={u.id}>{u.id} — {u.name}</option>)}</select></div>
+      <div className="ix-field"><label>New upline (search by name, ID or email)</label>
+        <SearchSelect value={v} onChange={setV} noneLabel="No upline" placeholder="Search user…" options={opts.map((u) => ({ value: u.id, label: `${u.name} (${u.id})`, sub: u.email }))} /></div>
     </Modal>
   );
 }
@@ -137,7 +139,8 @@ function ReferralModal({ user, onClose }: { user: User; onClose: () => void }) {
   return (
     <Modal title="Edit upline referral" onClose={onClose} footer={<><button className="ix-btn ix-btn-outline" onClick={onClose}>Cancel</button><button className="ix-btn ix-btn-primary" onClick={() => { d.editReferral(user.id, v || undefined); onClose(); }}>Save</button></>}>
       Sets the IB link this client registered under; the registration type follows the IB type.
-      <div className="ix-field"><label>Referring IB</label><select className="ix-select" value={v} onChange={(e) => setV(e.target.value)}><option value="">None (direct)</option>{d.ibs.filter((i) => i.userId !== user.id).map((i) => <option key={i.id} value={i.id}>{i.id} — {d.users.find((u) => u.id === i.userId)?.name} ({i.type})</option>)}</select></div>
+      <div className="ix-field"><label>Referring IB (search by IB ID, name or type)</label>
+        <SearchSelect value={v} onChange={setV} noneLabel="None (direct)" placeholder="Search IB…" options={d.ibs.filter((i) => i.userId !== user.id).map((i) => ({ value: i.id, label: `${i.id} — ${d.users.find((u) => u.id === i.userId)?.name ?? ""}`, sub: `${i.type} · ${i.rank} IB` }))} /></div>
     </Modal>
   );
 }

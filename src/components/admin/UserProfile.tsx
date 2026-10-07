@@ -9,6 +9,7 @@ import Tabs from "./Tabs";
 import ConfirmationModal, { Modal } from "./ConfirmationModal";
 import { useAdminData } from "@/context/AdminDataContext";
 import { userStats } from "@/lib/selectors";
+import { teamIds } from "@/lib/network";
 import { fmtDate, fmtDateTime, money, signedMoney } from "@/lib/format";
 import type { AccountStatus } from "@/types/admin";
 
@@ -31,6 +32,9 @@ export default function UserProfile({ userId }: { userId: string }) {
   const deps = d.deposits.filter((x) => x.userId === userId);
   const wds = d.withdrawals.filter((x) => x.userId === userId);
   const vios = d.violations.filter((v) => v.userId === userId);
+  const team = teamIds(d.users, user.id);
+  const teamDeposit = d.deposits.filter((x) => team.has(x.userId) && x.status === "Successful").reduce((a, x) => a + x.amount, 0);
+  const teamWithdraw = d.withdrawals.filter((x) => team.has(x.userId) && x.status === "Successful").reduce((a, x) => a + x.amount, 0);
   const initials = user.name.split(" ").map((w) => w[0]).join("").slice(0, 2);
   const go = (t: string) => { setTab(t); document.getElementById("user-tabs")?.scrollIntoView({ behavior: "smooth", block: "start" }); };
 
@@ -91,6 +95,7 @@ export default function UserProfile({ userId }: { userId: string }) {
           <Card title="IB Information"><InfoGrid items={[
             ["IB ID", ib ? <IdLink key="b" href={`/ib/profile/${ib.id}`}>{ib.id}</IdLink> : "None (direct)"], ["IB Type", ib?.type ?? "—"], ["IB Rank", ib ? `${ib.rank} IB` : "—"],
             ["Referral Source", user.referralSource], ["Registration Type", user.registrationType],
+            ["Total Deposit (IB team)", money(teamDeposit)], ["Total Withdrawal (IB team)", money(teamWithdraw)],
             ...(ownIb ? [["This user is an IB", <IdLink key="o" href={`/ib/profile/${ownIb.id}`}>{ownIb.id} · {ownIb.rank}</IdLink>] as [string, React.ReactNode]] : []),
           ]} /></Card>
           {user.marketing && <Card title="Marketing Account"><InfoGrid items={[["Assigned", fmtDate(user.marketing.assignedAt)], ["Approved by", user.marketing.approvedBy]]} /></Card>}
