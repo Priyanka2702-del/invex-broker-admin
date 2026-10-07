@@ -64,15 +64,13 @@ export default function RiskOverviewPage() {
       </div>
       <div style={{ marginTop: 16 }}>
         <Card title="Open violations awaiting action" action={<Link href="/risk/violations" className="ix-btn ix-btn-sm ix-btn-soft">View all</Link>} flush>
-          <table className="ix-table ix-mini-tbl"><tbody>
-            {open.length === 0 && <tr><td className="ix-empty">Nothing open — all violations reviewed.</td></tr>}
+<div className="ix-tbl-wrap"><table className="ix-table ix-mini-tbl"><tbody>            {open.length === 0 && <tr><td className="ix-empty">Nothing open — all violations reviewed.</td></tr>}
             {open.slice(0, 6).map((v) => (
               <tr key={v.id} className="click" onClick={() => router.push(`/risk/violations/${v.id}`)}>
                 <td><b>{v.type}</b><div style={{ fontSize: 12, color: "var(--ix-muted)" }}>{v.id} · {fmtDateTime(v.createdAt)}</div></td>
                 <td>User <UserLink id={v.userId} /></td><td>{v.tradeId} · {v.symbol}</td><td><StatusBadge status={v.severity} /></td>
               </tr>))}
-          </tbody></table>
-        </Card>
+</tbody></table></div>        </Card>
       </div>
     </>
   );

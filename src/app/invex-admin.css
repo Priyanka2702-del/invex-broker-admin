@@ -37,7 +37,7 @@
 .ix-scrim.open { opacity: 1; pointer-events: auto; }
 
 /* ── Main + navbar ─────────────────────────── */
-.ix-main { margin-left: var(--ix-side-w); min-width: 0; transition: margin-left .25s ease; }
+.ix-main { margin-left: var(--ix-side-w); min-width: 0; overflow-x: clip; transition: margin-left .25s ease; }
 .ix-nav-bar { position: sticky; top: 0; z-index: 60; height: var(--ix-nav-h); background: rgba(255,255,255,.94); backdrop-filter: blur(8px); border-bottom: 1px solid var(--ix-border); display: flex; align-items: center; gap: 16px; padding: 0 28px; }
 .ix-crumbs { display: flex; flex-direction: column; min-width: 0; }
 .ix-crumbs .t { font-size: 18px; font-weight: 700; letter-spacing: -.2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
