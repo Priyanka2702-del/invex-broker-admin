@@ -79,8 +79,8 @@ export default function AdminNavbar({ onMenu }: { onMenu: () => void }) {
           <button type="button" className="ix-icon-btn" onClick={() => setPop(pop === "notif" ? "" : "notif")} aria-label="Notifications">
             <i className="ti ti-bell" />{notifs.length > 0 && <span className="dot" />}
           </button>
-          {pop === "notif" && (
-            <div className="ix-pop" style={{ width: 340 }}>
+           {pop === "notif" && (
+  <div className="ix-pop ix-notification-pop">
               <div className="ix-pop-h"><span>Notifications</span><span style={{ color: "var(--ix-muted)", fontWeight: 500 }}>{notifs.length} new</span></div>
               {notifs.map((n) => (
                 <button key={n.k} className="ix-pop-i" onClick={() => router.push(n.href)}>
