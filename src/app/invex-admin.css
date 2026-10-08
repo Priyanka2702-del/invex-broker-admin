@@ -248,236 +248,76 @@
 .ix-legend { display: flex; gap: 14px; font-size: 12.5px; color: var(--ix-muted); }
 .ix-legend span::before { content: ""; display: inline-block; width: 9px; height: 9px; border-radius: 3px; background: var(--c); margin-right: 6px; }
 .ix-mini-tbl td, .ix-mini-tbl th { padding-top: 10px !important; padding-bottom: 10px !important; }
+
 /* =========================================================
-   MOBILE FIXES — PROMOTIONS + ADMIN NAVBAR
+   MOBILE FIXES — page layout, tables, toolbars, navbar popups
+   (consolidated; replaces the earlier "MOBILE FIXES" and
+   "NOTIFICATION POPUP — MOBILE FIX" blocks)
    ========================================================= */
+
+/* Notification popup (both class names supported) */
+.ix-notification-pop, .ix-pop-notif { width: 340px; max-height: calc(100vh - var(--ix-nav-h) - 24px); overflow-y: auto; }
 
 @media (max-width: 720px) {
 
-  /* Main page should never create horizontal overflow */
-  .ix-shell,
-  .ix-main,
-  .ix-content {
-    max-width: 100%;
-    width: 100%;
-    overflow-x: hidden;
+  /* Use `clip`, NOT `hidden`: hidden turns these into scroll containers and breaks the sticky navbar */
+  .ix-shell, .ix-main, .ix-content { max-width: 100%; width: 100%; overflow-x: clip; }
+  .ix-content { padding: 14px 12px; }
+
+  .ix-ph { align-items: flex-start; gap: 12px; margin-bottom: 16px; }
+  .ix-ph h1 { font-size: 21px; }
+  .ix-ph p { font-size: 12.5px; line-height: 1.5; }
+  .ix-ph .ix-btn { width: 100%; justify-content: center; }
+
+  .ix-grid.c4 { grid-template-columns: 1fr; gap: 10px; }
+  .ix-stat { padding: 14px 16px; }
+
+  /* Toolbars */
+  .ix-toolbar { padding: 12px; gap: 8px; flex-direction: column; align-items: stretch; }
+  .ix-toolbar > * { max-width: 100%; }
+  .ix-toolbar > .ix-spacer { display: none; }
+  .ix-search { width: 100%; max-width: none; min-width: 0; }
+  .ix-search input { width: 100%; }
+  .ix-toolbar .ix-select, .ix-toolbar .ix-input { width: 100%; max-width: 100%; }
+  .ix-toolbar .ix-btn { width: 100%; justify-content: center; }
+  .ix-fl { flex-wrap: wrap; }
+  .ix-fl .ix-input { flex: 1; min-width: 120px; }
+
+  /* Tables scroll inside their card */
+  .ix-tbl-wrap { width: 100%; max-width: 100%; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
+  .ix-table { min-width: 900px; }
+  .ix-table.ix-mini-tbl { min-width: 0; }            /* small dashboard/risk tables */
+  .ix-table th, .ix-table td { white-space: nowrap; }
+  .ix-table thead th { padding: 10px 12px; font-size: 10px; }
+  .ix-table tbody td { padding: 12px; font-size: 12px; }
+  .ix-act { flex-wrap: nowrap; gap: 5px; }
+  .ix-act .ix-btn { flex-shrink: 0; }
+
+  .ix-pager { padding: 12px; flex-direction: column; align-items: stretch; }
+  .ix-pager .pages { justify-content: center; flex-wrap: wrap; }
+
+  /* Navbar */
+  .ix-nav-bar { width: 100%; max-width: 100%; overflow: visible; padding: 0 12px; }
+  .ix-nav-right { flex-shrink: 0; }
+
+  /* Notification popup: fixed, full width with 12px margins (navbar's backdrop-filter makes it the containing block) */
+  .ix-notification-pop, .ix-pop-notif {
+    position: fixed; top: calc(var(--ix-nav-h) + 8px); left: 12px; right: 12px;
+    width: auto; max-width: none; min-width: 0; box-sizing: border-box; z-index: 999;
   }
+  /* Profile popup: anchored to the right, never wider than the screen */
+  .ix-nav-right .ix-pop:not(.ix-notification-pop):not(.ix-pop-notif) { width: min(280px, calc(100vw - 24px)); min-width: 0; right: 0; left: auto; }
 
-  /* Page content spacing */
-  .ix-content {
-    padding: 14px 12px;
-  }
-
-  /* Page heading */
-  .ix-ph {
-    align-items: flex-start;
-    gap: 12px;
-    margin-bottom: 16px;
-  }
-
-  .ix-ph h1 {
-    font-size: 21px;
-  }
-
-  .ix-ph p {
-    font-size: 12.5px;
-    line-height: 1.5;
-  }
-
-  /* Create promotion button */
-  .ix-ph .ix-btn {
-    width: 100%;
-    justify-content: center;
-  }
-
-  /* Stats cards */
-  .ix-grid.c4 {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .ix-stat {
-    padding: 14px 16px;
-  }
-
-  /* =====================================================
-     PROMOTIONS TOOLBAR
-     ===================================================== */
-
-  .ix-toolbar {
-    padding: 12px;
-    gap: 8px;
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .ix-toolbar > * {
-    max-width: 100%;
-  }
-
-  .ix-search {
-    width: 100%;
-    max-width: none;
-    min-width: 0;
-  }
-
-  .ix-search input {
-    width: 100%;
-  }
-
-  .ix-toolbar .ix-select,
-  .ix-toolbar .ix-input {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .ix-toolbar .ix-btn {
-    width: 100%;
-    justify-content: center;
-  }
-
-  /* Export button */
-  .ix-toolbar > .ix-spacer {
-    display: none;
-  }
-
-  /* =====================================================
-     TABLE
-     ===================================================== */
-
-  .ix-tbl-wrap {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .ix-table {
-    min-width: 900px;
-  }
-
-  .ix-table th,
-  .ix-table td {
-    white-space: nowrap;
-  }
-
-  .ix-table thead th {
-    padding: 10px 12px;
-    font-size: 10px;
-  }
-
-  .ix-table tbody td {
-    padding: 12px;
-    font-size: 12px;
-  }
-
-  /* Action buttons */
-  .ix-act {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 5px;
-  }
-
-  .ix-act .ix-btn {
-    flex-shrink: 0;
-  }
-
-  /* Pagination */
-  .ix-pager {
-    padding: 12px;
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .ix-pager .pages {
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  /* =====================================================
-     NOTIFICATION POPUP
-     ===================================================== */
-
-  .ix-nav-bar {
-    width: 100%;
-    max-width: 100%;
-    overflow: visible;
-    padding: 0 12px;
-  }
-
-  .ix-nav-right {
-    flex-shrink: 0;
-  }
-
-  .ix-nav-right .ix-pop {
-    width: calc(100vw - 24px) !important;
-    max-width: 360px;
-    min-width: 0;
-    right: 0;
-    left: auto;
-  }
-
-  .ix-pop-i {
-    min-width: 0;
-    padding: 11px 13px;
-  }
-
-  .ix-pop-i span {
-    min-width: 0;
-    flex: 1;
-  }
-
-  .ix-pop-i b,
-  .ix-pop-i small {
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  /* Notification popup should stay inside viewport */
-  .ix-nav-right > div:first-child .ix-pop {
-    right: 0;
-  }
+  .ix-pop-i { min-width: 0; padding: 11px 13px; width: 100%; box-sizing: border-box; }
+  .ix-pop-i span { min-width: 0; flex: 1; }
+  .ix-pop-i b, .ix-pop-i small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 }
 
 /* Very small phones */
 @media (max-width: 380px) {
-
-  .ix-content {
-    padding: 12px 10px;
-  }
-
-  .ix-nav-bar {
-    padding: 0 10px;
-  }
-
-  .ix-icon-btn {
-    width: 38px;
-    height: 38px;
-  }
-
-  .ix-profile {
-    width: 38px;
-    height: 38px;
-    justify-content: center;
-  }
-
-  .ix-pop-i {
-    padding: 10px 12px;
-  }
-}
-
-.ix-notification-pop {
-  width: 340px;
-  max-width: calc(100vw - 24px);
-}
-
-@media (max-width: 720px) {
-  .ix-notification-pop {
-    width: calc(100vw - 24px);
-    max-width: 360px;
-    right: 0;
-  }
+  .ix-content { padding: 12px 10px; }
+  .ix-nav-bar { padding: 0 10px; }
+  .ix-icon-btn { width: 38px; height: 38px; }
+  .ix-profile { width: 38px; height: 38px; justify-content: center; }
+  .ix-pop-i { padding: 10px 12px; }
 }
