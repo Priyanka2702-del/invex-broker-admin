@@ -42,7 +42,7 @@ function Frame({ series, labels, fmt, kind }: { series: Series[]; labels: string
   const showLabel = (i: number) => i === n - 1 || (i % stride === 0 && (n - 1 - i) * pxPer >= MIN_LABEL_GAP);
 
   return (
-    <div className="ix-chart" ref={ref} onMouseLeave={() => setHover(null)} style={{ minWidth: 0, maxWidth: "100%", overflow: "hidden" }}>
+    <div className="ix-chart" ref={ref} onMouseLeave={() => setHover(null)} style={{ minWidth: 0, maxWidth: "100%", overflow: "visible" }}>
       {/* viewBox + width:100% => the svg always follows the card width and never forces it wider */}
       <svg
         viewBox={`0 0 ${w} ${H}`}
@@ -87,7 +87,7 @@ function Frame({ series, labels, fmt, kind }: { series: Series[]; labels: string
         }))}
       </svg>
       {hover !== null && (
-        <div className="ix-tip" style={{ left: Math.min(Math.max(xc(hover), 70), w - 70), top: 34 }}>
+        <div className="ix-tip" style={{ left: Math.min(Math.max(xc(hover), 70), w - 70), top: PAD.t, transform: "translateX(-50%)", zIndex: 10 }}>
           <div style={{ opacity: .7, marginBottom: 3 }}>{labels[hover]}</div>
           {series.map((s) => <div key={s.name}><span style={{ color: s.color }}>●</span> {s.name}: <b>{fmt(s.values[hover])}</b></div>)}
         </div>
