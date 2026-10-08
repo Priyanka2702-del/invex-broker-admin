@@ -3,14 +3,18 @@ import { useEffect, useRef, useState } from "react";
 
 export type Series = { name: string; color: string; values: number[] };
 const H = 230, PAD = { l: 46, r: 12, t: 12, b: 26 };
+const MIN_LABEL_GAP = 58; // min px between two x-axis labels
 
 function useWidth() {
   const ref = useRef<HTMLDivElement>(null);
   const [w, setW] = useState(600);
   useEffect(() => {
-    if (!ref.current) return;
-    const ro = new ResizeObserver(([e]) => setW(Math.max(280, Math.floor(e.contentRect.width))));
-    ro.observe(ref.current);
+    const el = ref.current;
+    if (!el) return;
+    const set = (v: number) => setW(Math.max(240, Math.floor(v)));
+    set(el.getBoundingClientRect().width || 600);
+    const ro = new ResizeObserver(([e]) => set(e.contentRect.width));
+    ro.observe(el);
     return () => ro.disconnect();
   }, []);
   return [ref, w] as const;
@@ -28,20 +32,40 @@ function Frame({ series, labels, fmt, kind }: { series: Series[]; labels: string
   const iw = w - PAD.l - PAD.r, ih = H - PAD.t - PAD.b;
   const y = (v: number) => PAD.t + ih - ((v - bottom) / (top - bottom || 1)) * ih;
   const n = labels.length, step = iw / n;
-  const xc = (i: number) => PAD.l + (kind === "line" ? (iw * i) / (n - 1) : step * (i + 0.5));
+  const xc = (i: number) => PAD.l + (kind === "line" ? (iw * i) / Math.max(n - 1, 1) : step * (i + 0.5));
   const ticks = Array.from({ length: 5 }, (_, i) => bottom + ((top - bottom) * i) / 4);
   const bw = kind === "grouped" ? Math.min(16, (step * 0.7) / series.length) : Math.min(20, step * 0.55);
+
+  // x-axis labels: spacing depends on real pixel width, so they never overlap on phones
+  const pxPer = kind === "line" ? iw / Math.max(n - 1, 1) : step;
+  const stride = Math.max(1, Math.ceil(MIN_LABEL_GAP / pxPer));
+  const showLabel = (i: number) => i === n - 1 || (i % stride === 0 && (n - 1 - i) * pxPer >= MIN_LABEL_GAP);
+
   return (
-    <div className="ix-chart" ref={ref} onMouseLeave={() => setHover(null)}>
-      <svg width={w} height={H} onMouseMove={(e) => {
-        const r = e.currentTarget.getBoundingClientRect(); const x = e.clientX - r.left;
-        const i = kind === "line" ? Math.round(((x - PAD.l) / iw) * (n - 1)) : Math.floor((x - PAD.l) / step);
-        setHover(i >= 0 && i < n ? i : null);
-      }}>
+    <div className="ix-chart" ref={ref} onMouseLeave={() => setHover(null)} style={{ minWidth: 0, maxWidth: "100%", overflow: "hidden" }}>
+      {/* viewBox + width:100% => the svg always follows the card width and never forces it wider */}
+      <svg
+        viewBox={`0 0 ${w} ${H}`}
+        width="100%"
+        height={H}
+        style={{ display: "block", width: "100%", maxWidth: "100%", touchAction: "pan-y" }}
+        onMouseMove={(e) => {
+          const r = e.currentTarget.getBoundingClientRect(); const x = ((e.clientX - r.left) / r.width) * w;
+          const i = kind === "line" ? Math.round(((x - PAD.l) / iw) * (n - 1)) : Math.floor((x - PAD.l) / step);
+          setHover(i >= 0 && i < n ? i : null);
+        }}
+        onTouchMove={(e) => {
+          const t = e.touches[0]; const r = e.currentTarget.getBoundingClientRect(); const x = ((t.clientX - r.left) / r.width) * w;
+          const i = kind === "line" ? Math.round(((x - PAD.l) / iw) * (n - 1)) : Math.floor((x - PAD.l) / step);
+          setHover(i >= 0 && i < n ? i : null);
+        }}
+      >
         {ticks.map((t, i) => (
           <g key={i}><line x1={PAD.l} x2={w - PAD.r} y1={y(t)} y2={y(t)} stroke={t === 0 && bottom < 0 ? "#cbd5e1" : "#eef2f8"} /><text x={PAD.l - 8} y={y(t) + 4} textAnchor="end">{short(t)}</text></g>
         ))}
-        {labels.map((l, i) => (i % Math.ceil(n / 7) === 0 && (n - 1 - i) >= Math.ceil(n / 7) / 2 || i === n - 1) && <text key={l} x={xc(i)} y={H - 6} textAnchor="middle">{l}</text>)}
+        {labels.map((l, i) => showLabel(i) && (
+          <text key={`${l}-${i}`} x={xc(i)} y={H - 6} textAnchor={i === n - 1 && kind === "line" ? "end" : i === 0 && kind === "line" ? "start" : "middle"}>{l}</text>
+        ))}
         {hover !== null && kind === "line" && <line x1={xc(hover)} x2={xc(hover)} y1={PAD.t} y2={PAD.t + ih} stroke="#cfd9ea" strokeDasharray="4 4" />}
         {hover !== null && kind !== "line" && <rect x={PAD.l + step * hover} y={PAD.t} width={step} height={ih} fill="#2456e6" opacity={0.05} rx={6} />}
         {kind === "line" && series.map((s, si) => {
@@ -72,7 +96,7 @@ function Frame({ series, labels, fmt, kind }: { series: Series[]; labels: string
   );
 }
 export function Legend({ series }: { series: Series[] }) {
-  return <div className="ix-legend">{series.map((s) => <span key={s.name} style={{ ["--c" as string]: s.color }}>{s.name}</span>)}</div>;
+  return <div className="ix-legend" style={{ flexWrap: "wrap" }}>{series.map((s) => <span key={s.name} style={{ ["--c" as string]: s.color }}>{s.name}</span>)}</div>;
 }
 export const LineChart = (p: { series: Series[]; labels: string[]; fmt?: (n: number) => string }) => <Frame {...p} fmt={p.fmt ?? String} kind="line" />;
 export const BarChart = (p: { series: Series[]; labels: string[]; fmt?: (n: number) => string; diverging?: boolean }) => <Frame {...p} fmt={p.fmt ?? String} kind={p.diverging ? "diverging" : "grouped"} />;

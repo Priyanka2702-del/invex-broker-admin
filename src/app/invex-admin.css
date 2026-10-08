@@ -280,8 +280,38 @@
   .ix-search input { width: 100%; }
   .ix-toolbar .ix-select, .ix-toolbar .ix-input { width: 100%; max-width: 100%; }
   .ix-toolbar .ix-btn { width: 100%; justify-content: center; }
-  .ix-fl { flex-wrap: wrap; }
-  .ix-fl .ix-input { flex: 1; min-width: 120px; }
+
+  /* Range filters (Created / Amount): label + input – input in ONE row, never overflow.
+     Flex is used so it works whatever the JSX children are (label, inputs, "–"). */
+  .ix-toolbar .ix-fl {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .ix-toolbar .ix-fl > :first-child { flex: 0 0 auto; white-space: nowrap; }   /* label */
+  .ix-toolbar .ix-fl > :not(.ix-input):not(.ix-select):not(:first-child) { flex: 0 0 auto; } /* the "–" separator */
+  .ix-toolbar .ix-fl .ix-input,
+  .ix-toolbar .ix-fl .ix-select {
+    flex: 1 1 0;
+    width: auto;           /* overrides .ix-toolbar .ix-input { width: 100% } */
+    min-width: 0;          /* overrides native date input min-width */
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 0 8px;
+    font-size: 13px;
+  }
+  .ix-toolbar .ix-fl .ix-select { padding-right: 24px; background-position: right 8px center; }
+  .ix-toolbar .ix-fl input[type="date"],
+  .ix-toolbar .ix-fl input[type="datetime-local"] {
+    -webkit-appearance: none;
+    appearance: none;
+    min-width: 0;
+    text-align: left;
+  }
 
   /* Tables scroll inside their card */
   .ix-tbl-wrap { width: 100%; max-width: 100%; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
@@ -320,4 +350,6 @@
   .ix-icon-btn { width: 38px; height: 38px; }
   .ix-profile { width: 38px; height: 38px; justify-content: center; }
   .ix-pop-i { padding: 10px 12px; }
+  .ix-toolbar .ix-fl { gap: 6px; }
+  .ix-toolbar .ix-fl .ix-input, .ix-toolbar .ix-fl .ix-select { font-size: 12.5px; padding: 0 6px; }
 }
